@@ -1,0 +1,4 @@
+(defun make-matrix (rows cols &optional (initial-value 0))
+  "Create a ROWS×COLS matrix filled with INITIAL-VALUE."
+  (make-array (list rows cols) :initial-element initial-value))
+

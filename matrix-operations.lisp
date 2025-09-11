@@ -1,0 +1,28 @@
+(defun make-matrix (rows cols &optional (init 0))
+  (make-array (list rows cols) :initial-element init))
+
+(defun print-matrix (M)
+  (dotimes (i (array-dimension M 0))
+    (dotimes (j (array-dimension M 1))
+      (format t "~3a " (aref M i j)))
+    (terpri)))
+
+(defun identity-matrix (n)
+  (let ((m (make-matrix n n)))
+    (dotimes (i n)
+      (setf (aref m i i) 1))
+    m))
+
+(defun matrix-add (A B)
+  (unless (and (= (array-dimension A 0) (array-dimension B 0))
+               (= (array-dimension A 1) (array-dimension B 1)))
+    (error "Matrix dimensions do not match: ~A vs ~A"
+           (array-dimensions A)
+           (array-dimensions B)))
+  (let* ((rows (array-dimension A 0))
+         (cols (array-dimension A 1))
+         (C (make-array (list rows cols))))
+    (dotimes (i rows)
+      (dotimes (j cols)
+        (setf (aref C i j) (+ (aref A i j) (aref B i j)))))
+    C))
