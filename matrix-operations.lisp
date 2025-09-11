@@ -26,3 +26,19 @@
       (dotimes (j cols)
         (setf (aref C i j) (+ (aref A i j) (aref B i j)))))
     C))
+
+(defun matrix-multiply (A B)
+  "Multiply two matrices A and B. Throws an error if dimensions are incompatible."
+  (unless (= (array-dimension A 1) (array-dimension B 0))
+    (error "Matrix dimensions do not allow multiplication: ~A vs ~A"
+           (array-dimensions A)
+           (array-dimensions B)))
+  (let* ((rows (array-dimension A 0))
+         (cols (array-dimension B 1))
+         (inner (array-dimension A 1))
+         (C (make-array (list rows cols) :initial-element 0)))
+    (dotimes (i rows)
+      (dotimes (j cols)
+        (dotimes (k inner)
+          (incf (aref C i j) (* (aref A i k) (aref B k j))))))
+    C))
