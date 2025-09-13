@@ -14,6 +14,7 @@
     m))
 
 (defun matrix-add (A B)
+  "Add two matrices A and B. Throws an error if dimensions are incompatible."
   (unless (and (= (array-dimension A 0) (array-dimension B 0))
                (= (array-dimension A 1) (array-dimension B 1)))
     (error "Matrix dimensions do not match: ~A vs ~A"
@@ -42,3 +43,13 @@
         (dotimes (k inner)
           (incf (aref C i j) (* (aref A i k) (aref B k j))))))
     C))
+
+(defun transpose (M)
+  "Return the transpose of matrix M."
+  (let* ((rows (array-dimension M 0))
+         (cols (array-dimension M 1))
+         (MT (make-array (list cols rows))))
+    (dotimes (i rows)
+      (dotimes (j cols)
+        (setf (aref MT j i) (aref M i j))))
+    MT))
